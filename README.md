@@ -104,12 +104,12 @@ By applying **preprocessing**, **feature extraction**, and **deep learning model
 
 | **Phase**                   | **Key Activities**                     | **Duration** |
 |-----------------------------|----------------------------------------|--------------|
-| 1️⃣ Data Preparation        | Organizing and preprocessing data      | Week 1       |
-| 2️⃣ Model Design & Architecture | Designing and structuring the model   | Week 2       |
-| 3️⃣ Model Training          | Training the model                     | Week 3       |
-| 4️⃣ Model Evaluation        | Evaluating performance                 | Week 4       |
-| 5️⃣ Optimization & Fine-tuning | Improving model accuracy               | Week 5       |
-| 6️⃣ UI & Deployment         | Building UI and deploying project      | Week 6       |
+| 1️⃣ Data Preparation        | Organizing and preprocessing data      | day 1       |
+| 2️⃣ Model Design & Architecture | Designing and structuring the model   | day 2       |
+| 3️⃣ Model Training          | Training the model                     | day 3       |
+| 4️⃣ Model Evaluation        | Evaluating performance                 | day 4       |
+| 5️⃣ Optimization & Fine-tuning | Improving model accuracy               | day 5       |
+| 6️⃣ UI & Deployment         | Building UI and deploying project      | day 6       |
 
 ---
 
@@ -125,11 +125,11 @@ By applying **preprocessing**, **feature extraction**, and **deep learning model
 
 | **Member**  | **Role**                   | **Date**     |
 |-------------|----------------------------|--------------|
-| Member 1    | Data Preparation           | DD/MM/YYYY   |
+| Esraa  | Data Preparation           | 15/08/2025  |
 | Member 2    | Model Design & Architecture| DD/MM/YYYY   |
 | Member 3    | Model Training             | DD/MM/YYYY   |
 | Member 4    | Model Evaluation           | DD/MM/YYYY   |
 | Member 5    | Optimization & Fine-tuning | DD/MM/YYYY   |
 | Member 6    | UI & Deployment            | DD/MM/YYYY |
-|
-| عضو 6 | UI & Deployment | DD/MM/YYYY |
+
+
