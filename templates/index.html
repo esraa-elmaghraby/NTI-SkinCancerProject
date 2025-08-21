@@ -1,1 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Diagnosis - AI-Powered Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #F5EFEB 0%, #E8DDD4 25%, #D4C4B0 50%, #C4A484 75%, #B8956A 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(196, 164, 132, 0.3) 0%, rgba(196, 164, 132, 0.15) 25%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(184, 149, 106, 0.25) 0%, rgba(184, 149, 106, 0.12) 30%, transparent 60%),
+                radial-gradient(ellipse at 40% 10%, rgba(232, 221, 212, 0.4) 0%, rgba(232, 221, 212, 0.2) 35%, transparent 70%),
+                radial-gradient(ellipse at 10% 70%, rgba(212, 196, 176, 0.3) 0%, rgba(212, 196, 176, 0.15) 40%, transparent 80%),
+                radial-gradient(ellipse at 90% 30%, rgba(139, 115, 85, 0.2) 0%, rgba(139, 115, 85, 0.1) 45%, transparent 85%),
+                radial-gradient(ellipse at 60% 90%, rgba(245, 239, 235, 0.35) 0%, rgba(245, 239, 235, 0.18) 50%, transparent 90%);
+            background-size: 1200px 800px, 1000px 1200px, 1400px 600px, 800px 1000px, 700px 1300px, 1100px 700px;
+            background-position: 0 0, 300px 400px, 600px 150px, 150px 500px, 800px 300px, 400px 700px;
+            animation: magical-flow 60s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 25%),
+                linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 0%, transparent 30%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 35%),
+                conic-gradient(from 0deg at 25% 25%, rgba(102, 126, 234, 0.1), transparent, rgba(245, 87, 108, 0.08), transparent),
+                conic-gradient(from 180deg at 75% 75%, rgba(79, 172, 254, 0.09), transparent, rgba(240, 147, 251, 0.07), transparent);
+            background-size: 600px 600px, 800px 400px, 700px 700px, 1000px 1000px, 1200px 1200px;
+            background-position: 0 0, 400px 300px, 200px 500px, 100px 100px, 500px 200px;
+            animation: ethereal-dance 50s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes magical-flow {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.8;
+            }
+            16% { 
+                transform: translate(40px, -30px) rotate(3deg) scale(1.1);
+                opacity: 0.9;
+            }
+            33% { 
+                transform: translate(-25px, 35px) rotate(-2deg) scale(0.9);
+                opacity: 1;
+            }
+            50% { 
+                transform: translate(35px, 20px) rotate(2.5deg) scale(1.05);
+                opacity: 0.85;
+            }
+            66% { 
+                transform: translate(-20px, -40px) rotate(-1.5deg) scale(0.95);
+                opacity: 0.95;
+            }
+            83% { 
+                transform: translate(20px, 25px) rotate(1deg) scale(1.02);
+                opacity: 0.9;
+            }
+        }
+        
+        @keyframes ethereal-dance {
+            0% { 
+                transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+                opacity: 0.7;
+            }
+            20% { 
+                transform: translateX(60px) translateY(-40px) rotate(72deg) scale(1.1);
+                opacity: 0.9;
+            }
+            40% { 
+                transform: translateX(120px) translateY(20px) rotate(144deg) scale(0.9);
+                opacity: 0.6;
+            }
+            60% { 
+                transform: translateX(80px) translateY(60px) rotate(216deg) scale(1.05);
+                opacity: 0.8;
+            }
+            80% { 
+                transform: translateX(40px) translateY(-20px) rotate(288deg) scale(0.95);
+                opacity: 0.75;
+            }
+            100% { 
+                transform: translateX(0) translateY(0) rotate(360deg) scale(1);
+                opacity: 0.7;
+            }
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(200, 217, 230, 0.1), transparent, rgba(86, 124, 141, 0.08), transparent);
+            animation: card-glow 8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .glass-card:hover::before {
+            opacity: 0;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(0px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes card-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .medical-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
+        }
+        
+        .upload-zone {
+            border: 2px dashed #e2e8f0;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px;
+        }
+        
+        .upload-zone:hover {
+            border-color: #3B82F6;
+            background: linear-gradient(135deg, #EBF4FF 0%, #DBEAFE 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.15);
+        }
+        
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(196, 164, 132, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .upload-zone:hover::before {
+            left: 100%;
+        }
+        
+        .form-input {
+            background: rgba(248, 250, 252, 0.8);
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+        
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -5px rgba(59, 130, 246, 0.6);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f7f3f0 0%, #f2ede8 100%);
+            border-left: 6px solid #c4a484;
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3B82F6, #2563EB, #1D4ED8);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 20px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .medical-icon {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+            border-radius: 20px;
+        }
+        
+        .status-indicator {
+            position: relative;
+        }
+        
+        .status-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+        }
+        
+        .flask-animation {
+            animation: flask-bounce 3s ease-in-out infinite;
+        }
+        
+        @keyframes flask-bounce {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+            }
+            25% { 
+                transform: translateY(-8px) rotate(-2deg);
+            }
+            50% { 
+                transform: translateY(-12px) rotate(0deg);
+            }
+            75% { 
+                transform: translateY(-6px) rotate(2deg);
+            }
+        }
+        
+        .flask-icon {
+            animation: flask-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes flask-glow {
+            0% { 
+                filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));
+            }
+            100% { 
+                filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6));
+            }
+        }
+        
+        .glass-card {
+            animation: card-float 8s ease-in-out infinite;
+        }
+        
+        @keyframes card-float {
+            0%, 100% { 
+                transform: translateY(0px);
+            }
+            50% { 
+                transform: translateY(-5px);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <!-- Navigation -->
+    <nav class="glass-card border-b border-white/10 sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="medical-icon w-10 h-10 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold gradient-text">Skin Cancer Diagnosis</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <div class="mb-8">
+                <div class="medical-icon w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 flask-animation">
+                    <svg class="w-10 h-10 text-white flask-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z"></path>
+                    </svg>
+                </div>
+            </div>
+            <h2 class="text-5xl font-bold text-stone-700 mb-6">Skin Analysis</h2>
+            <p class="text-xl text-stone-600 max-w-2xl mx-auto mb-8">
+                Upload your skin image for AI analysis
+            </p>
+        </div>
+
+        <!-- Main Analysis Form -->
+        <div class="max-w-5xl mx-auto">
+            <div class="glass-card rounded-3xl p-10 mb-12">
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Analysis Form</h3>
+                </div>
+
+                <form id="diagnosisForm" class="space-y-8">
+                    <!-- Patient Demographics -->
+                    <div class="grid lg:grid-cols-3 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-slate-700 font-semibold text-sm uppercase tracking-wide">Gender</label>
+                            <select id="gender" class="form-input w-full p-4 rounded-xl text-slate-700 font-medium">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-slate-700 font-semibold text-sm uppercase tracking-wide">Age</label>
+                            <input type="number" id="age" min="1" max="120" placeholder="Enter age" class="form-input w-full p-4 rounded-xl text-slate-700 font-medium">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-slate-700 font-semibold text-sm uppercase tracking-wide">Lesion Location</label>
+                            <select id="location" class="form-input w-full p-4 rounded-xl text-slate-700 font-medium">
+                                <option value="unknown">Unknown</option>
+                                <option value="back">Back</option>
+                                <option value="lower extremity">Lower Extremity</option>
+                                <option value="trunk">Trunk</option>
+                                <option value="upper extremity">Upper Extremity</option>
+                                <option value="abdomen">Abdomen</option>
+                                <option value="face">Face</option>
+                                <option value="chest">Chest</option>
+                                <option value="foot">Foot</option>
+                                <option value="neck">Neck</option>
+                                <option value="scalp">Scalp</option>
+                                <option value="hand">Hand</option>
+                                <option value="ear">Ear</option>
+                                <option value="genital">Genital</option>
+                                <option value="acral">Acral</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Image Upload Section -->
+                    <div class="space-y-4">
+                        <label class="block text-slate-700 font-semibold text-sm uppercase tracking-wide">Lesion Image Upload</label>
+                        <div class="upload-zone rounded-2xl p-12 text-center cursor-pointer relative" onclick="document.getElementById('imageInput').click()">
+                            <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                            <div id="uploadContent">
+                                <div class="medical-icon w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-slate-700 mb-2">Upload Image</h4>
+                                <p class="text-slate-500 mb-4">Click to select or drag and drop</p>
+                            </div>
+                            <div id="imagePreview" class="hidden">
+                                <img id="previewImg" class="max-w-full h-64 object-contain mx-auto rounded-xl shadow-lg mb-4">
+                                <div class="flex items-center justify-center space-x-2 text-green-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="font-semibold">Image uploaded successfully</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Button -->
+                    <div class="text-center pt-6">
+                        <button type="submit" class="btn-primary text-white font-bold py-5 px-12 rounded-2xl text-lg inline-flex items-center space-x-3 relative">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            <span>Begin AI Analysis</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Analysis Progress -->
+                <div id="analysisProgress" class="hidden mt-8">
+                    <div class="bg-slate-100 rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-bold text-slate-700">Analysis in Progress</h4>
+                            <span id="progressText" class="text-sm text-slate-500">Initializing...</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                            <div id="progressBar" class="progress-bar h-full rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="hidden mt-10">
+                    <div class="result-card rounded-2xl p-8 relative">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-amber-800 flex items-center space-x-3">
+                                <div class="medical-icon w-8 h-8 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <span>Analysis Complete</span>
+                            </h3>
+                            <div class="text-right">
+                                <p class="text-sm text-amber-600 font-medium">Analysis ID</p>
+                                <p class="text-xs text-amber-500" id="analysisId">DS-2024-001</p>
+                            </div>
+                        </div>
+                        
+                        <div id="diagnosisOutput" class="grid lg:grid-cols-2 gap-8">
+                            <!-- Results will be populated here -->
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('uploadContent').classList.add('hidden');
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('diagnosisForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const gender = document.getElementById('gender').value;
+            const age = document.getElementById('age').value;
+            const location = document.getElementById('location').value;
+            const imageInput = document.getElementById('imageInput');
+            
+            // Validation
+            if (!gender || !age || !imageInput.files[0]) {
+                alert('Please complete all required fields and upload an image for analysis.');
+                return;
+            }
+
+            // Show progress
+            const button = e.target.querySelector('button[type="submit"]');
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg><span>Processing...</span>';
+            button.disabled = true;
+
+            document.getElementById('analysisProgress').classList.remove('hidden');
+            
+            // Simulate analysis progress
+            const progressSteps = [
+                { progress: 15, text: 'Preprocessing image...' },
+                { progress: 35, text: 'Analyzing lesion characteristics...' },
+                { progress: 55, text: 'Comparing with medical database...' },
+                { progress: 75, text: 'Calculating risk assessment...' },
+                { progress: 90, text: 'Generating report...' },
+                { progress: 100, text: 'Analysis complete!' }
+            ];
+
+            let currentStep = 0;
+            const progressInterval = setInterval(() => {
+                if (currentStep < progressSteps.length) {
+                    const step = progressSteps[currentStep];
+                    document.getElementById('progressBar').style.width = step.progress + '%';
+                    document.getElementById('progressText').textContent = step.text;
+                    currentStep++;
+                } else {
+                    clearInterval(progressInterval);
+                    showResults();
+                }
+            }, 800);
+
+            function showResults() {
+                // Generate analysis ID
+                const analysisId = 'DS-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                document.getElementById('analysisId').textContent = analysisId;
+
+                // This will be replaced with actual model results
+                const modelResult = {
+                    type: 'Awaiting model prediction...',
+                    confidence: '98%',
+                    risk: 'Pending',
+                    color: 'blue',
+                    description: 'Analysis will be provided by the deep learning model'
+                };
+                
+                const resultsHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="font-bold text-slate-700 mb-4 text-lg">Primary Diagnosis</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Condition:</span>
+                                    <span class="font-bold text-${modelResult.color}-600 text-lg">${modelResult.type}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Confidence:</span>
+                                    <span class="font-bold text-slate-800">${modelResult.confidence}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Risk Level:</span>
+                                    <span class="font-bold text-${modelResult.color}-600">${modelResult.risk}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="font-bold text-slate-700 mb-3">Clinical Description</h4>
+                            <p class="text-slate-600 leading-relaxed">${modelResult.description}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-6 shadow-sm">
+                            <h4 class="font-bold text-slate-700 mb-4 text-lg">Patient Profile</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Age:</span>
+                                    <span class="font-medium">${age} years</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Gender:</span>
+                                    <span class="font-medium capitalize">${gender}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Location:</span>
+                                    <span class="font-medium capitalize">${location}</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-slate-600">Analysis Date:</span>
+                                    <span class="font-medium">${new Date().toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                `;
+
+                document.getElementById('diagnosisOutput').innerHTML = resultsHTML;
+                document.getElementById('analysisProgress').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+                
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+
+                // Don't auto-scroll to results, let user see them naturally
+            }
+        });
+
+
+
+        // Add drag and drop functionality
+        const uploadZone = document.querySelector('.upload-zone');
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#3B82F6';
+            uploadZone.style.background = 'linear-gradient(135deg, #EBF4FF 0%, #DBEAFE 100%)';
+        });
+        
+        uploadZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#e2e8f0';
+            uploadZone.style.background = 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)';
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#e2e8f0';
+            uploadZone.style.background = 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('imageInput').files = files;
+                handleImageUpload({ target: { files: files } });
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97281fa5b1727e89',t:'MTc1NTc1ODI2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
 
